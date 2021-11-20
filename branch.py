@@ -56,7 +56,3 @@ if __name__ == '__main__':
     for i, isomer in enumerate(isomers):
         nx.draw_kamada_kawai(isomer, ax=ax[i])
     plt.savefig(f'C{carbon_count}_isomers.png')
-
-
-
-
