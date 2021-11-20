@@ -6,4 +6,6 @@ Enumerate all saturated and acyclic alkane isomers for a given number of carbons
 ## dependencies
 - [networkx](https://networkx.org/)
 - [scipy](https://scipy.org/)
-- (for visualization) [matplotlib](https://matplotlib.org/)
+- [matplotlib](https://matplotlib.org/)
+- openbabel
+- pysmiles
