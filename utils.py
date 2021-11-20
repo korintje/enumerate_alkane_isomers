@@ -1,5 +1,8 @@
 from itertools import combinations
 import networkx as nx
+from pysmiles import write_smiles, fill_valence
+import openbabel as ob
+import pybel
 
 MAX_VALENCY = 4
 
@@ -42,3 +45,15 @@ def enumerate_isomers(carbon_count, acyclic=False):
 
     print("Enumeration finished!")
     return isomers
+
+
+def graph2smiles(mol):
+    for i in mol.size():
+        mol.nodes[i]['element'] = 'C'
+    fill_valence(mol, respect_hcount=True)
+    return write_smiles(mol)
+
+
+def write_gjf_from_smiles(smiles):
+    obj = pybel.readstring('smiles', smiles)
+    obj.write('gjf', './test.gjf')
