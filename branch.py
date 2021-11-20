@@ -19,8 +19,6 @@ def enumerate_isomers(carbon_count, acyclic=False):
     bonds = list(combinations(range(carbon_count), 2))
     bond_combinations = list(combinations(bonds, bond_count))
 
-    # print(bond_combinations)
-
     for bond_combination in bond_combinations:
 
         # Create "isomer" as a non-directed graph
@@ -56,4 +54,3 @@ if __name__ == '__main__':
     for i, isomer in enumerate(isomers):
         nx.draw_kamada_kawai(isomer, ax=ax[i])
     plt.savefig(f'C{carbon_count}_isomers.png')
-    
