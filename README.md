@@ -22,7 +22,7 @@ sudo apt update && install openbabel -y
 ```
 
 ## Usage
-modify parameter "N" in `test.py` and
+modify parameter "carbon_count" in `test.py` and execute:
 ```
 python test.py
 ```
