@@ -1,8 +1,9 @@
 from itertools import combinations
 import networkx as nx
+import grinpy as gp
 from pysmiles import write_smiles, fill_valence
-import openbabel as ob
-import pybel
+# import openbabel as ob
+# import pybel
 
 MAX_VALENCY = 4
 
@@ -11,7 +12,7 @@ def enumerate_isomers(carbon_count, acyclic=False):
         given number of carbons and return as NetworkX Graph object """
 
     print("Enumerating all possible isomers......")
-    wiener_indexes = []
+    randic_indexes = []
     isomers = []
 
     # enumerate all possible bonding combinations of numeically labeled carbons 
@@ -25,12 +26,6 @@ def enumerate_isomers(carbon_count, acyclic=False):
         isomer = nx.Graph()
         for bond in bond_combination:
             isomer.add_edge(*bond)
-        
-        # remove duplications by wiener index
-        wiener_index = nx.algorithms.wiener.wiener_index(isomer)
-        if (wiener_index == float('inf')) or (wiener_index in wiener_indexes):
-            continue
-        wiener_indexes.append(wiener_index)
 
         # remove hypervalent structures
         is_hypervalent = any([degree[1] > MAX_VALENCY for degree in isomer.degree])
@@ -41,19 +36,19 @@ def enumerate_isomers(carbon_count, acyclic=False):
         if acyclic and nx.cycle_basis(isomer):
             continue
         
+        # remove duplications by wiener index
+        randic_index = gp.randic_index(isomer)
+        if (randic_index == float('inf')) or (randic_index in randic_indexes):
+            continue
+        randic_indexes.append(randic_index)
+
         isomers.append(isomer)
 
     print("Enumeration finished!")
     return isomers
 
-
 def graph2smiles(mol):
-    for i in mol.size():
+    for i in range(mol.size()):
         mol.nodes[i]['element'] = 'C'
     fill_valence(mol, respect_hcount=True)
-    return write_smiles(mol)
-
-
-def write_gjf_from_smiles(smiles):
-    obj = pybel.readstring('smiles', smiles)
-    obj.write('gjf', './test.gjf')
+    return write_smiles(mol).replace('[*]', 'C')
