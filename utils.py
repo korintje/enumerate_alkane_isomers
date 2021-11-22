@@ -2,8 +2,6 @@ from itertools import combinations
 import networkx as nx
 import grinpy as gp
 from pysmiles import write_smiles, fill_valence
-# import openbabel as ob
-# import pybel
 
 MAX_VALENCY = 4
 
